@@ -8,12 +8,20 @@ public static class Arrays
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
     public static double[] MultiplesOf(double number, int length)
     {
-        // TODO Problem 1 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Plan for Problem 1:
+        // 1. Create an array that will hold exactly 'length' values.
+        // 2. Loop through each position in the array.
+        // 3. Store the current multiple of the starting number at that position.
+        // 4. Return the completed array.
 
-        return []; // replace this return statement with your own
+        double[] multiples = new double[length];
+
+        for (int i = 0; i < length; i++)
+        {
+            multiples[i] = number * (i + 1);
+        }
+
+        return multiples;
     }
 
     /// <summary>
@@ -25,9 +33,26 @@ public static class Arrays
     /// </summary>
     public static void RotateListRight(List<int> data, int amount)
     {
-        // TODO Problem 2 Start
-        // Remember: Using comments in your program, write down your process for solving this problem
-        // step by step before you write the code. The plan should be clear enough that it could
-        // be implemented by another person.
+        // Plan for Problem 2:
+        // 1. If the list is empty or the rotation amount is zero, do nothing.
+        // 2. Find the effective number of positions to move by using the amount modulo the list size.
+        // 3. Remove the last 'shift' elements from the list.
+        // 4. Insert those removed elements at the front of the list.
+        // 5. The list is now rotated to the right in place.
+
+        if (data.Count <= 1)
+        {
+            return;
+        }
+
+        int shift = amount % data.Count;
+        if (shift == 0)
+        {
+            return;
+        }
+
+        List<int> movedItems = data.GetRange(data.Count - shift, shift);
+        data.RemoveRange(data.Count - shift, shift);
+        data.InsertRange(0, movedItems);
     }
 }
