@@ -21,23 +21,24 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1
-        var wordSet = new HashSet<string>(words);
+        var seen = new HashSet<string>();
         var pairs = new List<string>();
 
-foreach (var word in words)
-{
-    var reverse = new string(new[] { word[1], word[0] });
+        foreach (var word in words)
+        {
+            if (!seen.Add(word))
+                 continue;
 
-    if (word != reverse &&
-        wordSet.Contains(reverse) &&
-        string.CompareOrdinal(word, reverse) < 0)
-    {
-        pairs.Add($"{word} & {reverse}");
-    }
-}
+            if (word[0] == word[1])
+                continue;
 
-return pairs.ToArray();
+            var reverse = string.Concat(word.AsSpan(1, 1), word.AsSpan(0, 1));
+
+            if (seen.Contains(reverse))
+                pairs.Add($"{word} & {reverse}");
+        }
+
+         return pairs.ToArray();
     }
 
     /// <summary>
@@ -57,9 +58,9 @@ return pairs.ToArray();
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - var degree = fields[3];
+            var degree = fields[3];
 
-if (degrees.ContainsKey(degree))
+            if (degrees.ContainsKey(degree))
     degrees[degree]++;
 else
     degrees[degree] = 1;
@@ -74,7 +75,7 @@ else
     /// new word.  A dictionary is used to solve the problem.
     /// 
     /// Examples:
-    /// is_anagram("CAT","ACT") would return true
+    /// is_anagram("CAT","CT") would return true
     /// is_anagram("DOG","GOOD") would return false because GOOD has 2 O's
     /// 
     /// Important Note: When determining if two words are anagrams, you
@@ -86,9 +87,10 @@ else
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - var counts = new Dictionary<char, int>();
+        // TODO Problem 3
+        var counts = new Dictionary<char, int>();
 
-foreach (var character in word1.ToLowerInvariant())
+        foreach (var character in word1.ToLowerInvariant())
 {
     if (character == ' ')
         continue;
@@ -111,7 +113,6 @@ foreach (var character in word2.ToLowerInvariant())
 }
 
 return counts.Count == 0;
-        return false;
     }
 
     /// <summary>
@@ -140,22 +141,21 @@ return counts.Count == 0;
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
 
-        // TODO Problem 5: var summaries = new List<string>();
+        // TODO Problem 5:
+        var summaries = new List<string>();
 
-if (featureCollection?.Features != null)
-{
-    foreach (var feature in featureCollection.Features)
-    {
-        summaries.Add(
-            $"{feature.Properties.Place} - Magnitude {feature.Properties.Mag}");
-    }
-}
+        if (featureCollection?.Features != null)
+        {
+            foreach (var feature in featureCollection.Features)
+            {
+                summaries.Add($"{feature.Properties.Place} - Mag {feature.Properties.Mag}");
+            }
+        }
 
-return summaries.ToArray();
+        return summaries.ToArray();
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
     }
 }
