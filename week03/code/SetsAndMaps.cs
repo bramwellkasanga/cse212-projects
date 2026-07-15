@@ -21,8 +21,23 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        // TODO Problem 1
+        var wordSet = new HashSet<string>(words);
+        var pairs = new List<string>();
+
+foreach (var word in words)
+{
+    var reverse = new string(new[] { word[1], word[0] });
+
+    if (word != reverse &&
+        wordSet.Contains(reverse) &&
+        string.CompareOrdinal(word, reverse) < 0)
+    {
+        pairs.Add($"{word} & {reverse}");
+    }
+}
+
+return pairs.ToArray();
     }
 
     /// <summary>
@@ -42,7 +57,12 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
-            // TODO Problem 2 - ADD YOUR CODE HERE
+            // TODO Problem 2 - var degree = fields[3];
+
+if (degrees.ContainsKey(degree))
+    degrees[degree]++;
+else
+    degrees[degree] = 1;
         }
 
         return degrees;
@@ -66,7 +86,31 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
+        // TODO Problem 3 - var counts = new Dictionary<char, int>();
+
+foreach (var character in word1.ToLowerInvariant())
+{
+    if (character == ' ')
+        continue;
+
+    counts[character] = counts.GetValueOrDefault(character) + 1;
+}
+
+foreach (var character in word2.ToLowerInvariant())
+{
+    if (character == ' ')
+        continue;
+
+    if (!counts.ContainsKey(character))
+        return false;
+
+    counts[character]--;
+
+    if (counts[character] == 0)
+        counts.Remove(character);
+}
+
+return counts.Count == 0;
         return false;
     }
 
@@ -96,7 +140,18 @@ public static class SetsAndMaps
 
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
 
-        // TODO Problem 5:
+        // TODO Problem 5: var summaries = new List<string>();
+
+if (featureCollection?.Features != null)
+{
+    foreach (var feature in featureCollection.Features)
+    {
+        summaries.Add(
+            $"{feature.Properties.Place} - Magnitude {feature.Properties.Mag}");
+    }
+}
+
+return summaries.ToArray();
         // 1. Add code in FeatureCollection.cs to describe the JSON using classes and properties 
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
