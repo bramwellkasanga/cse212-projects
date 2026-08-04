@@ -6,16 +6,23 @@ public class Node
 
     public Node(int data)
     {
-        this.Data = data;
+        Data = data;
     }
 
+    /// <summary>
+    /// Inserts a value into the Binary Search Tree.
+    /// Duplicate values are not inserted.
+    /// </summary>
     public void Insert(int value)
     {
-        // TODO Start Problem 1
+        // Do not insert duplicates
+        if (value == Data)
+        {
+            return;
+        }
 
         if (value < Data)
         {
-            // Insert to the left
             if (Left is null)
                 Left = new Node(value);
             else
@@ -23,7 +30,6 @@ public class Node
         }
         else
         {
-            // Insert to the right
             if (Right is null)
                 Right = new Node(value);
             else
@@ -31,15 +37,38 @@ public class Node
         }
     }
 
+    /// <summary>
+    /// Determines whether the specified value exists in the tree.
+    /// </summary>
     public bool Contains(int value)
     {
-        // TODO Start Problem 2
-        return false;
+        if (value == Data)
+            return true;
+
+        if (value < Data)
+        {
+            if (Left is null)
+                return false;
+
+            return Left.Contains(value);
+        }
+        else
+        {
+            if (Right is null)
+                return false;
+
+            return Right.Contains(value);
+        }
     }
 
+    /// <summary>
+    /// Returns the height of the tree rooted at this node.
+    /// </summary>
     public int GetHeight()
     {
-        // TODO Start Problem 4
-        return 0; // Replace this line with the correct return statement(s)
+        int leftHeight = Left == null ? 0 : Left.GetHeight();
+        int rightHeight = Right == null ? 0 : Right.GetHeight();
+
+        return Math.Max(leftHeight, rightHeight) + 1;
     }
 }
